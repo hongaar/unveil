@@ -210,13 +210,31 @@
                 return;
             }
 
-            var viewportTop = $window.scrollTop(),
-                viewportEnd = viewportTop + height,
-                containerTop = settings.container[0] !== $window[0] ? viewportTop - settings.container.offset().top : 0,
-                elementTop = $this.offset().top + containerTop,
-                elementEnd = elementTop + $this.height();
+            var viewport = {top: 0 - settings.offset, bottom: $window.height() + settings.offset},
+                isCustomContainer = settings.container[0] !== $window[0],
+                elementRect = this.getBoundingClientRect();
+            if (isCustomContainer) {
+                var containerRect = settings.container[0].getBoundingClientRect();
+                if (contains(viewport, containerRect)) {
+                    var top = containerRect.top - settings.offset;
+                    var bottom = containerRect.bottom + settings.offset;
+                    var containerRectWithOffset = {
+                        top: top > viewport.top ? top : viewport.top,
+                        bottom: bottom < viewport.bottom ? bottom : viewport.bottom
+                    };
+                    return contains(containerRectWithOffset, elementRect);
+                }
+                return false;
+            } else {
+                return contains(viewport, elementRect);
+            }
+        }
 
-            return elementEnd >= viewportTop - settings.offset && elementTop <= viewportEnd + settings.offset;
+        /**
+         * Whether `viewport` contains `rect` vertically
+         */
+        function contains(viewport, rect) {
+            return rect.bottom >= viewport.top && rect.top <= viewport.bottom;
         }
 
         /**
