@@ -15,3 +15,24 @@
     top: 2000px;
     left: 0;
 }
+
+.scrollable-container {
+    height: 100px;
+    overflow: auto;
+}
+
+.content {
+    height: 2000px;
+    position: relative;
+}
+
+.content-img-top {
+    position: absolute;
+    top: 0;
+}
+
+.content-img-bottom {
+    position: absolute;
+    bottom: 0;
+}
+
