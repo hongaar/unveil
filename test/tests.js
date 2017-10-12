@@ -27,7 +27,7 @@
 
     QUnit.module("Unveil tests", {
         beforeEach: function () {
-            $('body').append('<div id="testContainer"></div>');
+            $('body').prepend('<div id="testContainer"></div>');
         },
         afterEach: function () {
             $('#testContainer').remove();

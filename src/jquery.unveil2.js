@@ -187,7 +187,7 @@
         });
 
         this.one('destroy' + unveilNamespace, function () {
-            $(this).off(unveilNamespace);
+            $(this).off(unveilNamespace).removeData(unveilString);
             if (containerContext.images) {
                 containerContext.images = containerContext.images.not(this);
                 if (!containerContext.images.length) {
@@ -302,9 +302,8 @@
         }
 
         function destroyContainer() {
-            settings.container.off(unveilNamespace);
-            containerContext.images.off(unveilNamespace);
-            settings.container.data(unveilString, null);
+            settings.container.off(unveilNamespace).removeData(unveilString);
+            containerContext.images.off(unveilNamespace).removeData(unveilString);
             containerContext.initialized = false;
             containerContext.images = null;
         }
@@ -321,12 +320,12 @@
             var $this = $(this),
                 elmPlaceholder = $this.data(srcString + '-' + placeholderString) || settings.placeholder;
 
-            // Add element to global array
-            containerContext.images = $(containerContext.images).add(this);
-
             // If this element has been called before,
             // don't set placeholder now to prevent FOUI (Flash Of Ustyled Image)
             if (!$this.data(unveilString)) {
+
+                // Add element to global array
+                containerContext.images = $(containerContext.images).add(this);
 
                 // Set the unveil flag
                 $this.data(unveilString, true);
